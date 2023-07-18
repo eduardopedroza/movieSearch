@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form>
+        <input type="text" name="title" id="title" placeholder="Movie name">
+        <input type="text" name="rating" id="rating" placeholder="Rating">
+        <button type="submit">Submit</button>
+        <select id="sort-select">
+            <option value="sort">Sort by</option>
+            <option value="option1">Alphabetcal order a-z</option>
+            <option value="option2">Alphabetcal order z-a</option>
+            <option value="option3">Highest rating</option>
+            <option value="option4">Lowest rating</option>
+        </select>
+    </form>
+    <ul id="movie-list">
+    </ul>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('form').submit((e) => {
+                e.preventDefault();
+
+                //Taking the inputted values;
+                let movie = $('#title').val();
+                let rating = $('#rating').val();
+
+                if((rating >= 0 && rating <= 10 && rating !== '' ) && (movie.length >= 2)){
+                    // let newMovie = $('<div>="movie-container"></div>');
+                    // let titleSpan = $(`<span class="movie-span">${movie}   </span>`);
+                    // let ratingSpan = $(`<span class="rating-span">      ${rating}</span>`);
+                    // let deleteButton = $('<button id="delete">Delete</button>');
+
+                    // newMovie.append(titleSpan, ratingSpan, deleteButton);
+
+                    let newMovie = $(`<li>${movie} : ${rating} <button id="delete">Delete</button> </li>`);
+                    console.log(newMovie)
+                    $('#movie-list').append(newMovie);
+                    
+                }
+                else if(rating >= 0 && rating <= 10 && rating !== ''){
+                    alert('Enter more than 2 characters');
+                }
+                else {
+                    alert('Enter value from 0 - 10');
+                }
+                
+                
+            })  
+
+
+            $(document).on('click', 'button#delete', function () {
+                $(this).parent().remove();
+            })
+
+
+            $(document).on('change', '#sort-select', function () {
+                let sortBy = $(this).val();
+                let movieList = $('#movie-list');
+                
+                if(sortBy === 'option1'){
+                    //Sort by a-z
+                    let sortedMovies = movieList.children('li').sort((a,b) => {
+                        return $(a).text().localeCompare($(b).text());
+                    })
+                    movieList.html(sortedMovies);
+                }
+
+                else if(sortBy === 'option2'){
+                    //Sort by z-a
+                    let sortedMovies = movieList.children('li').sort((a,b) => {
+                        return $(b).text().localeCompare($(a).text());
+                    })
+                    movieList.html(sortedMovies);
+                }
+
+                else if(sortBy === 'option3'){
+                    //Sort by highest rating
+                    let sortedMovies = movieList.children('li').sort((a,b) => {
+                        let ratingA = parseFloat($(a).text().split(':')[1]);
+                        let ratingB = parseFloat($(b).text().split(':')[1]);
+
+                        return ratingB - ratingA;
+                    })
+                    movieList.html(sortedMovies);
+                }
+
+                else if(sortBy === 'option4'){
+                    //Sort by lowest rating
+                    let sortedMovies = movieList.children('li').sort((a,b) => {
+                        let ratingA = parseFloat($(a).text().split(':')[1]);
+                        let ratingB = parseFloat($(b).text().split(':')[1]);
+
+                        return ratingA - ratingB;
+                    })
+                    movieList.html(sortedMovies);
+                }
+            })
+        })    
+    </script>
+</body>
+</html>
+
+

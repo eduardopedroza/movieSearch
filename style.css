@@ -1,0 +1,16 @@
+body {
+    background: lightgray;
+    padding: 10px;
+}
+
+select {
+    float: right;
+}
+
+#movie-list {
+    align-items: center;
+  }
+
+  /* #movie-container {
+    display: inline-block;
+  } */
